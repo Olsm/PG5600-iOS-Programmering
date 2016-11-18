@@ -260,9 +260,33 @@ println("Kunne ikke hente gatenavn")
 
 */
 
+class Westerdals {
+    var students: [Student]?
+    
+    init() {
+        students = [Student]()
+    }
+    
+    func addStudent(student: Student) {
+        students?.append(student)
+    }
+}
 
+class Student {
+    var address: Address?
+    
+    init(address: Address?) {
+        self.address = address
+    }
+}
 
-
+class Address {
+    var street: String
+    
+    init(street: String) {
+        self.street = street
+    }
+}
 
 /*:
 ## Oppgave 7
