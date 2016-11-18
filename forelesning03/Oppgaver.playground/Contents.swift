@@ -397,7 +397,7 @@ du har fått følgende state satt (enumen må du definere selv):
 
 let isOnline = false
 let hasTakenBackup = true
-let readyState = .Ready
+let readyState = ReadyState.Ready
 let name : String? = "User login screen"
 
 func createUser() {
@@ -411,7 +411,34 @@ func createUser() {
 
 */
 
+enum ReadyState {
+    case Ready
+}
 
+let isOnline = false
+let hasTakenBackup = true
+let readyState = ReadyState.Ready
+let name : String? = "User login screen"
+
+func createUser() {
+    if (isOnline) {
+        if (hasTakenBackup) {
+            if (readyState == ReadyState.Ready) {
+                if name != nil {
+                    // Do something
+                }
+            }
+        }
+    }
+}
+
+func createUser2() {
+    guard (isOnline) else {return}
+    guard (hasTakenBackup) else {return}
+    guard (readyState == ReadyState.Ready) else {return}
+    guard ((name) != nil) else {return}
+    // Do something
+}
 
 /*:
 
