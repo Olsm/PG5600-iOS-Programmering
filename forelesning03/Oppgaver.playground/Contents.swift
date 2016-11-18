@@ -17,6 +17,16 @@ Den skal oppfylle dette:
 
 */
 
+extension String {
+    subscript(position: Int) -> Character? {
+        guard (position >= 0 && position < self.characters.count) else {
+            return nil
+        }
+        let index = self.characters.index(self.startIndex, offsetBy: position)
+        return (self[index])
+    }
+}
+
 /*:
 
 ## Oppgave 2
@@ -31,11 +41,56 @@ livingBeing skal ha birthDate og birthPlace , disse skal det ikke gå ann å ove
 
 Dette skal gå kompilere:
 
-let madScientist = MadScientist(madnessfactor: 41, IQ: 32, name: "John Doe")
+let madScientist = MadScientist(name: "John Doe", IQ: 32, madnessfactor: 41)
 
 let madScientist2 = MadScientist(IQ: 32)       // HINT: bruk convenience init og sett default-verdier på attributtene som ikke blir gitt
 
 */
+
+class LivingBeing {
+    let birthDate: Date
+    let birthPlace: String
+    
+    init(birthDate: Date, birthPlace: String) {
+        self.birthDate = birthDate
+        self.birthPlace = birthPlace
+    }
+}
+
+class Person : LivingBeing {
+    var name: String
+    
+    init(name: String, birthDate: Date, birthPlace: String) {
+        self.name = name
+        super.init(birthDate: birthDate, birthPlace: birthPlace)
+    }
+}
+
+class Scientist : Person {
+    var IQ: Int
+    
+    init(name: String, birthDate: Date, birthPlace: String, IQ: Int) {
+        self.IQ = IQ
+        super.init(name: name, birthDate: birthDate, birthPlace: birthPlace)
+    }
+}
+
+class MadScientist : Scientist {
+    var madnessfactor: Int
+    
+    init(name: String, birthDate: Date, birthPlace: String, IQ: Int, madnessfactor: Int) {
+        self.madnessfactor = madnessfactor
+        super.init(name: name, birthDate: birthDate, birthPlace: birthPlace, IQ: IQ)
+    }
+    
+    convenience init (IQ: Int) {
+        self.init(name: "", birthDate: Date(), birthPlace: "", IQ: IQ, madnessfactor: 0)
+    }
+    
+    convenience init(name: String, IQ: Int, madnessfactor: Int) {
+        self.init(name: name, birthDate: Date(), birthPlace: "", IQ: IQ, madnessfactor: madnessfactor)
+    }
+}
 
 /*:
 
@@ -57,6 +112,44 @@ var stoppedAt: Date?
 
 */
 
+// 1. Fordi hour, minute og second er ikke optional og settes ikke til en default verdi.
+// Uten initializer blir variabler uten default verdi satt til nil, men da må de være optional.
+
+class Timer {
+    var hour: Int
+    var minute: Int
+    var second: Int
+    
+    var running: Bool = false
+    var startedAt: Date?
+    var stoppedAt: Date?
+    
+    init(hour: Int, minute: Int, second: Int, running: Bool, startedAt: Date?, stoppedAt: Date?) {
+        self.hour = hour
+        self.minute = minute
+        self.second = second
+        self.running = running
+        self.startedAt = startedAt
+        self.stoppedAt = stoppedAt
+    }
+    
+    init(hour: Int, minute: Int, second: Int) {
+        self.hour = hour
+        self.minute = minute
+        self.second = second
+    }
+    
+    convenience init(hour: Int, minute: Int) {
+        self.init(hour: hour, minute: minute, second: 0)
+    }
+    
+    convenience init(hour: Int) {
+        self.init(hour: hour, minute: 0, second: 0)
+    }
+}
+let date = Date()
+let timer1 = Timer(hour: 0, minute: 0, second: 0, running: false, startedAt: nil, stoppedAt: date)
+let timer2 = Timer(hour: 1)
 
 /*:
 ## Oppgave 4
@@ -71,6 +164,46 @@ var stoppedAt: Date?
 
 */
 
+class Animal {
+    let name: String
+    
+    final var sleep: String {
+        return "\(name) is sleeping"
+    }
+    
+    func getSound() -> String {
+        return "\(name) makes a sound"
+    }
+    
+    required init(name: String) {
+        self.name = name
+    }
+}
+
+class Bird: Animal {
+    override func getSound() -> String {
+        return "\(name) whistles"
+    }
+}
+
+class Cat: Animal {
+    override func getSound() -> String {
+        return "\(name) meows"
+    }
+}
+
+let bird = Bird(name: "birdie")
+let cat = Cat(name: "cutie")
+let animals = [bird, cat]
+
+for animal in animals {
+    if (animal is Cat) {
+        print("\(animal.name) is a cat")
+    } else if (animal is Bird) {
+        print("\(animal.name) is a bird")
+    }
+    print(animal.getSound())
+}
 
 /*:
 ## Oppgave 5
@@ -90,7 +223,27 @@ frog.isAlive     // false
 
 */
 
+protocol LivingBeing2 {
+    var isAlive: Bool {get}
+    var birthDate: Date {get set}
+    var deathDate: Date? {get set}
+}
 
+extension LivingBeing2 {
+    var isAlive: Bool {
+        return deathDate == nil
+    }
+}
+
+class Frog: LivingBeing2 {
+    internal var deathDate: Date?
+    var birthDate: Date
+    
+    init(birthDate: Date) {
+        self.birthDate = birthDate
+        self.deathDate = nil
+    }
+}
 
 /*:
 ## Oppgave 6
