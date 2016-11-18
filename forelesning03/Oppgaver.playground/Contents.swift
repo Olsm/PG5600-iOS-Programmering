@@ -303,7 +303,7 @@ println("Det var ikke mulig å sette en ny addresse")
 
 */
 
-
+// Dette fungerer allerede med koden over
 
 /*:
 ## Oppgave 8
@@ -320,8 +320,17 @@ println("Kunne ikke hente fullstendig gatenavn")
 
 */
 
+let address = Address(street: "Dyretråkket 24")
+let student = Student(address: address)
+let westerdals = Westerdals()
+westerdals.addStudent(student: student)
 
 
+if let fullStreetName = westerdals.students?[0].address?.street {
+    print("Fullstendig gatenavn er \(fullStreetName)")
+} else {
+    print("Kunne ikke hente fullstendig gatenavn")
+}
 
 
 /*:
@@ -338,7 +347,15 @@ println("Kunne ikke hente fullstendig gatenavn")
 ```
 */
 
-
+extension String {
+    var length: Int {
+        return self.characters.count
+    }
+    
+    func reverse() -> String {
+        return String(self.characters.reversed())
+    }
+}
 
 /*:
 
@@ -357,6 +374,19 @@ thirdArray.thirdElementInArray()    // nil
 
 ```
 */
+
+extension Array {
+    func thirdElementInArray() -> Any? {
+        if self.count < 3 {
+            return nil
+        }
+        return self[2]
+    }
+}
+
+let anArray = [3,4,24,33]
+let anotherArray = ["hello", "world", "!"]
+let thirdArray = [23.3]
 
 
 /*:
