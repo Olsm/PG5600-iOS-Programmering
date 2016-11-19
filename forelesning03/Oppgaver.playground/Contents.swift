@@ -456,10 +456,24 @@ car1 + nil     // ["Tesla" : car1]
 
 */
 
-
-
-
-
+class Car : Hashable {
+    var hashValue: Int {
+        return modelName.hashValue
+    }
+    var modelName: String
+    
+    init(modelName: String) {
+        self.modelName = modelName
+    }
+    
+    static func +(left: Car, right: Car) -> [String: Car] {
+        return[left.modelName: left, right.modelName: right]
+    }
+    
+    static func ==(car1: Car, car2: Car) -> Bool {
+        return car1.hashValue == car2.hashValue
+    }
+}
 
 /*:
 
@@ -468,6 +482,32 @@ car1 + nil     // ["Tesla" : car1]
 Lag en [Any] med 5 forskjellige objekter, løp gjennom arrayet og bruk switch for å printe de forskjellige objektene hvor du skriver ut klassens navn og hvor mange av dem du har funnet til nå.
 
 */
+
+let objects: [Any] = [1, 1.2, "A".characters.first!, "Test", true]
+var nInt = 0, nDouble = 0, nChar = 0, nString = 0, nBool = 0, nOther = 0
+
+for object in objects {
+    switch object {
+    case is Int:
+        nInt += 1
+        print("\(object) is an Int and \(nInt) found so far")
+    case is Double:
+        nDouble += 1
+        print("\(object) is a Double and \(nDouble) found so far")
+    case is Character:
+        nChar += 1
+        print("\(object) is a Character and \(nChar) found so far")
+    case is String:
+        nString += 1
+        print("\(object) is a String and \(nString) found so far")
+    case is Bool:
+        nBool += 1
+        print("\(object) is a Bool and \(nBool) found so far")
+    default:
+        nOther += 1
+        print("\(object) is \(type(of: object))")    }
+}
+
 /*:
 
 #Oppgave 15
@@ -478,9 +518,21 @@ let intArray = [ 234, 34 ,33]
 let stringArray = [ "hello", "world" ]
 let anyObjectArray : [AnyObject] = ["Omg", 234, 342.3]
 
-printAllStrings(intArray)
-printAllStrings(stringArray)         // printer: Hello   world
-printAllStrings(anyObjectArray)      // printer: Omg
+let intArray = [ 234, 34 ,33]
+let stringArray = [ "hello", "world" ]
+let anyObjectArray : [AnyObject] = ["Omg" as AnyObject, 234 as AnyObject, 342.3 as AnyObject]
+ 
+printAllStrings(array: intArray)
+printAllStrings(array: stringArray)         // printer: Hello   world
+printAllStrings(array: anyObjectArray)      // printer: Omg
 
 
 */
+
+func printAllStrings<T>(array: T) {
+    for object in array as! [AnyObject] {
+        if (object is String) {
+            print(object)
+        }
+    }
+}
